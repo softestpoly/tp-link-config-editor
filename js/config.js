@@ -357,6 +357,14 @@ export const encodeConfig = async (config) => {
 export const decodeConfig = async (file) => {
   ensureValidSize(file)
   const config = decryptBytes(new Uint8Array(await file.arrayBuffer()))
+  try {
+    download(
+      config
+    )
+  } catch (error) {
+    console.error('Failed to export config.', error)
+    alert(`Failed to export config. ${error}`)
+  }
   const littleEndian = isLittleEndian(config)
   const configFormat = getConfigFormat(config)
   const encodedXML = configFormat.extractXML(config, littleEndian)
